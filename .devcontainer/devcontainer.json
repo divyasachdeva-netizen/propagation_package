@@ -1,18 +1,11 @@
 {
-  "name": "CRPropa Environment",
+  "name": "CRPropa Container",
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "updateContentCommand": "",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
-    }
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
   },
-  "runArgs": [
-    "--shm-size=2g"
-  ],
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "postCreateCommand": "echo 'Container ready'"
 }
