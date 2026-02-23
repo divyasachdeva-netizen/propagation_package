@@ -1,0 +1,13 @@
+{
+  "name": "CRPropa Environment",
+  "build": { "dockerfile": "Dockerfile" },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [8888],
+  "remoteUser": "root"
+}
