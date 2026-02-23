@@ -1,22 +1,15 @@
 {
-  "name": "CRPropa Environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-
-  "features": {
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.10"
-    }
-  },
-
-  "postCreateCommand": "bash .devcontainer/setup_crpropa.sh",
-
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
-    }
-  },
-
-  "remoteUser": "vscode"
+    "name": "CRPropa Environment",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter"
+            ]
+        }
+    },
+    "remoteUser": "root"
 }
