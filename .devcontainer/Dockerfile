@@ -1,31 +1,21 @@
-FROM ubuntu:22.04
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
-# Install Python 3.10
-RUN apt update && apt install -y \
-    software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt update && apt install -y \
-    python3.10 python3.10-dev python3.10-distutils python3.10-venv \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
     git g++ gcc cmake make swig \
+    python3 python3-pip python3-dev python3-distutils python3-venv \
     libgsl-dev libboost-all-dev libfftw3-dev libhdf5-dev libeigen3-dev \
-    wget curl vim
-
-# Make python3.10 the default
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
-
-# Install pip for python3.10
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
+    && apt-get clean
 
 # Build CRPropa
-RUN git clone https://github.com/CRPropa/CRPropa3.git /opt/CRPropa3 && \
-    mkdir /opt/CRPropa3/build && cd /opt/CRPropa3/build && \
-    cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.10 -DPYTHON_BINDINGS=ON && \
-    make -j4 && make install
+RUN git clone https://github.com/CRPropa/CRPropa3.git /opt/CRPropa3 \
+    && mkdir /opt/CRPropa3/build \
+    && cd /opt/CRPropa3/build \
+    && cmake .. -DPYTHON_BINDINGS=ON \
+    && make -j2 \
+    && make install
 
-# Install Python bindings
-RUN cp -r /opt/CRPropa3/build/bindings/python/* /usr/local/lib/python3.10/dist-packages/
+# Python packages
+RUN pip install jupyterlab numpy scipy matplotlib h5py
 
 ENV PYTHONPATH="/usr/local/lib/python3.10/dist-packages:${PYTHONPATH}"
-
-# Install Jupyter + scientific python stack
-RUN python3.10 -m pip install jupyterlab numpy scipy matplotlib h5py
