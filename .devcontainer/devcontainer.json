@@ -1,11 +1,18 @@
 {
-  "name": "CRPropa Container",
-  "build": {
-    "dockerfile": "Dockerfile"
+  "name": "CRPropa Teaching Environment",
+  "dockerFile": "Dockerfile",
+  "containerUser": "root",
+  "forwardPorts": [8888],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
   },
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
-  },
-  "remoteUser": "root",
-  "postCreateCommand": "echo 'Container ready'"
+  "postCreateCommand": "pip install jupyterlab matplotlib numpy scipy h5py"
 }
