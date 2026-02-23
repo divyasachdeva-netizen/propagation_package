@@ -1,16 +1,35 @@
-FROM mambaorg/micromamba:1.5.2
+FROM ubuntu:22.04
 
-USER root
-
+# -----------------------------
+# Basic system + Python packages
+# -----------------------------
 RUN apt-get update && \
-    apt-get install -y build-essential cmake git wget python3-dev python3-pip && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y \
+    git wget curl \
+    build-essential cmake pkg-config \
+    python3 python3-pip python3-dev python3-setuptools \
+    libgsl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create environment and install CRPropa
-RUN micromamba create -y -n crp -c conda-forge crpropa python=3.10 \
-    && micromamba clean --all --yes
+# -----------------------------
+# Install CRPropa from source
+# -----------------------------
+RUN git clone --depth 1 https://github.com/CRPropa/CRPropa3.git /opt/CRPropa3 && \
+    cd /opt/CRPropa3 && \
+    mkdir build && cd build && \
+    cmake .. -DCRPROPA_BUILD_PYTHON_MODULE=ON -DPython_EXECUTABLE=/usr/bin/python3 && \
+    make -j4 && make install
 
-ENV MAMBA_DEFAULT_ENV=crp
-ENV PATH=/opt/conda/envs/crp/bin:$PATH
+# Ensure Python can find CRPropa
+ENV PYTHONPATH="/usr/local/lib/python3.10/dist-packages:${PYTHONPATH}"
 
-RUN python3 -c "import crpropa; print('CRPropa OK:', crpropa.__version__)"
+# Test CRPropa install
+RUN python3 - <<EOF
+import crpropa
+print("CRPropa installed OK:", crpropa.__version__)
+EOF
+
+# -----------------------------
+# Default settings
+# -----------------------------
+CMD ["/bin/bash"]
