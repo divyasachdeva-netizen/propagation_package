@@ -1,21 +1,16 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM mambaorg/micromamba:1.5.2
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    git g++ gcc cmake make swig \
-    python3 python3-pip python3-dev python3-distutils python3-venv \
-    libgsl-dev libboost-all-dev libfftw3-dev libhdf5-dev libeigen3-dev \
-    && apt-get clean
+USER root
 
-# Build CRPropa
-RUN git clone https://github.com/CRPropa/CRPropa3.git /opt/CRPropa3 \
-    && mkdir /opt/CRPropa3/build \
-    && cd /opt/CRPropa3/build \
-    && cmake .. -DPYTHON_BINDINGS=ON \
-    && make -j2 \
-    && make install
+RUN apt-get update && \
+    apt-get install -y build-essential cmake git wget python3-dev python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
-# Python packages
-RUN pip install jupyterlab numpy scipy matplotlib h5py
+# Create environment and install CRPropa
+RUN micromamba create -y -n crp -c conda-forge crpropa python=3.10 \
+    && micromamba clean --all --yes
 
-ENV PYTHONPATH="/usr/local/lib/python3.10/dist-packages:${PYTHONPATH}"
+ENV MAMBA_DEFAULT_ENV=crp
+ENV PATH=/opt/conda/envs/crp/bin:$PATH
+
+RUN python3 -c "import crpropa; print('CRPropa OK:', crpropa.__version__)"
