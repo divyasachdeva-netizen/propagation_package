@@ -1,6 +1,9 @@
 {
   "name": "CRPropa Environment",
-  "build": { "dockerfile": "Dockerfile" },
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "updateContentCommand": "",
   "customizations": {
     "vscode": {
       "settings": {
@@ -8,6 +11,8 @@
       }
     }
   },
-  "forwardPorts": [8888],
+  "runArgs": [
+    "--shm-size=2g"
+  ],
   "remoteUser": "root"
 }
