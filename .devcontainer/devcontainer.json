@@ -1,18 +1,22 @@
 {
-  "name": "CRPropa Teaching Environment",
-  "dockerFile": "Dockerfile",
-  "containerUser": "root",
-  "forwardPorts": [8888],
+  "name": "CRPropa Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.10"
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup_crpropa.sh",
+
   "customizations": {
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
-      },
-      "extensions": [
-        "ms-python.python",
-        "ms-toolsai.jupyter"
-      ]
+      }
     }
   },
-  "postCreateCommand": "pip install jupyterlab matplotlib numpy scipy h5py"
+
+  "remoteUser": "vscode"
 }
