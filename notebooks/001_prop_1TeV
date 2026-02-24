@@ -1,0 +1,28 @@
+import crpropa as crp
+import numpy as np
+import matplotlib.pyplot as plt
+
+source = crp.Source()
+source.add(crp.SourceParticleType(crp.ParticleType.Gamma))
+source.add(crp.SourceEnergy(1e13 * crp.eV))  # 10 TeV
+source.add(crp.SourcePosition(crp.Vector3d(100 * crp.Mpc, 0, 0)))
+
+sim = crp.ModuleList()
+sim.add(crp.EMPairProduction(crp.EBL_Gilmore12()))
+sim.add(crp.Redshift())
+
+observer = crp.Observer()
+observer.add(crp.ObserverPoint())
+sim.add(observer)
+
+source.run(sim, 1)
+print("Done")
+
+energies = np.logspace(11, 14.7, 30)  # 10 GeV to 500 TeV
+
+tau = [crp.opticalDepthGammaGamma(E, 100*crp.Mpc, crp.EBL_Gilmore12()) for E in energies]
+plt.semilogx(energies/crp.eV, np.exp(-np.array(tau)))
+plt.xlabel("Energy (eV)")
+plt.ylabel("Survival probability")
+plt.title("Gamma-ray attenuation over 100 Mpc")
+plt.show()
