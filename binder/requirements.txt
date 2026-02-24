@@ -1,5 +1,0 @@
-git+https://github.com/CRPropa/CRPropa3.git
-numpy
-matplotlib
-scipy
-h5py
