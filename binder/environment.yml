@@ -1,1 +1,16 @@
-
+name: crpropa-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - matplotlib
+  - h5py
+  - astropy
+  - pandas
+  - jupyterlab
+  - crpropa
+  - pip:
+      - tqdm
