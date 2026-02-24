@@ -1,10 +1,4 @@
-# CRPropa Teaching & Research Notebooks
+#High Energy Particle Astrophysics Course
 
-This repository contains a full set of CRPropa notebooks for teaching and
-research. It is designed to run on binder.
-
-Click below to run online:
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/divyasachdeva-netizen/propagation_package/main)
-
-
+This repository contains teaching material for CRPropa simulations.
+These notebooks run on Binder using the official CRPropa environment.
