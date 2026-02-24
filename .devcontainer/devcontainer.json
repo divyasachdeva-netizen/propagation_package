@@ -1,5 +1,5 @@
 {
-    "name": "CRPropa Environment",
+    "name": "CRPropa Prebuilt",
     "build": {
         "dockerfile": "Dockerfile"
     },
